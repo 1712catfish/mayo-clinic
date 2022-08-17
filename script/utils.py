@@ -32,7 +32,7 @@ def generate_run_script(path, scripts, prefixes=None, postfixes=None, capitalize
         run_script = []
         run_script.append(f"print('{prefix}', end='')")
         run_script.append(f"with open('{path}/{script}.py') as f:")
-        run_script.append(f"    exec(f.read())")
+        run_script.append(f"    exec(compile(f.read(), '', 'exec'))")
         run_script.append(f"print('{postfix}')")
         run_script = '\n'.join(run_script)
         run_scripts.append(run_script)
