@@ -24,20 +24,20 @@ def get_dataset(df, shuffle=True, buffer=512,
                 cache=True, repeat=True,
                 augment=True, ):
     dataset = tf.data.Dataset.from_tensor_slices((df.image_path.values, df.label.map(S2I_LBL_MAP).values))
-    dataset = dataset.map(lambda x, y: (tf_load_image(x, INPUT_SHAPE), tf.one_hot(y, N_CLASSES, dtype=tf.uint8)),
-                          num_parallel_calls=AUTOTUNE)
-    if shuffle:
-        dataset = dataset.shuffle(buffer)
-    if batch_size is not None:
-        dataset = dataset.batch(batch_size, drop_remainder=drop_last)
-    if cache:
-        dataset = dataset.cache()
-    if repeat:
-        dataset = dataset.cache()
-    if augment:
-        dataset = dataset.map(lambda x, y: (augment_batch(x), y), num_parallel_calls=AUTOTUNE)
-    dataset = dataset.map(lambda x, y: (tf.cast(x, tf.float32), y), num_parallel_calls=AUTOTUNE)
-    dataset = dataset.prefetch(tf.data.AUTOTUNE)
+    # dataset = dataset.map(lambda x, y: (tf_load_image(x, INPUT_SHAPE), tf.one_hot(y, N_CLASSES, dtype=tf.uint8)),
+    #                       num_parallel_calls=AUTOTUNE)
+    # if shuffle:
+    #     dataset = dataset.shuffle(buffer)
+    # if batch_size is not None:
+    #     dataset = dataset.batch(batch_size, drop_remainder=drop_last)
+    # if cache:
+    #     dataset = dataset.cache()
+    # if repeat:
+    #     dataset = dataset.cache()
+    # if augment:
+    #     dataset = dataset.map(lambda x, y: (augment_batch(x), y), num_parallel_calls=AUTOTUNE)
+    # dataset = dataset.map(lambda x, y: (tf.cast(x, tf.float32), y), num_parallel_calls=AUTOTUNE)
+    # dataset = dataset.prefetch(tf.data.AUTOTUNE)
     return dataset
 
 
@@ -70,7 +70,6 @@ try:
     load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
     IMAGE_DIR = GCS_PATH
     BATCH_SIZE = 64 * STRATEGY.num_replicas_in_sync
-
 except ValueError:
     TPU = None
     print('Using GPU/CPU')
