@@ -1,24 +1,24 @@
 from utils import *
 
-MODULES = ['dependencies', 'setups', 'heavy_setups', 'utils', 'distributed']
-
-RUN_DESCRIPTION = [
-    'Importing dependencies',
-    'Setting up light variables',
-    'Setting up heavy variables',
-    'Building utilities',
-    'Running distributed data preprocessing'
+PATH = 'train'
+MODS = [
+    'dependencies',
+    'setups',
+    'heavy_setups',
+    'utils',
+    'train'
+]
+DESC = [
+    'Importing dependencies...',
+    'Setting up light variables...',
+    'Setting up heavy variables...',
+    'Building utilities...',
+    'Running distributed data preprocessing...'
 ]
 
-_PREPS = load_code(path='/content/google-ai4code/prep', modules=MODULES)
+CODE = load_code(path=PATH, modules=MODS)
 print(generate_run_script(
-    code_string_vars=[f"CODES['{key}']" for key in MODULES],
-    run_description=RUN_DESCRIPTION
+    path=PATH,
+    scripts=MODS,
+    run_description=DESC,
 ))
-
-# print('Importing dependencies...'); exec(CODES['dependencies'])
-# print('Setting up light variables...'); exec(CODES['setups'])
-# print('Setting up heavy variables...'); exec(CODES['heavy_setups'])
-# print('Building utilities...'); exec(CODES['utils'])
-# print('Running distributed data preprocessing...'); exec(CODES['distributed'])
-
