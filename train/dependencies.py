@@ -1,22 +1,13 @@
-print("VERSION INFORMATION")
-
 # Machine Learning and Data Science Imports
 import tensorflow as tf
-
 import tensorflow_hub as tfhub
-
 import tensorflow_addons as tfa
-
 import pandas as pd
-
 pd.options.mode.chained_assignment = None
 import numpy as np
-
 import sklearn
-
 from sklearn.preprocessing import RobustScaler, PolynomialFeatures
 from pandarallel import pandarallel
-
 pandarallel.initialize()
 from sklearn.model_selection import GroupKFold, StratifiedKFold
 from scipy.spatial import cKDTree
