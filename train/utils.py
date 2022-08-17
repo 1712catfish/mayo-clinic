@@ -55,6 +55,41 @@ def get_class_weights(df):
     return _class_weights
 
 
+TRAIN_DIR = os.path.join(INPUT_PATH, 'train')
+TRAIN_CSV = os.path.join(INPUT_PATH, 'train.csv')
+TEST_DIR = os.path.join(INPUT_PATH, 'test')
+TEST_CSV = os.path.join(INPUT_PATH, 'test.csv')
+
+try:
+    TPU = tf.distribute.cluster_resolver.TPUClusterResolver()
+    print('Using TPU.')
+    tf.config.experimental_connect_to_cluster(TPU)
+    tf.tpu.experimental.initialize_tpu_system(TPU)
+    STRATEGY = tf.distribute.experimental.TPUStrategy(TPU)
+    save_locally = tf.saved_model.SaveOptions(experimental_io_device='/job:localhost')
+    load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
+    IMAGE_DIR = GCS_PATH
+    BATCH_SIZE = 64 * STRATEGY.num_replicas_in_sync
+
+except ValueError:
+    TPU = None
+    print('Using GPU/CPU.')
+    # Yield the default distribution strategy in Tensorflow
+    #   --> Works on CPU and single GPU.
+    STRATEGY = tf.distribute.get_strategy()
+    if tf.config.list_physical_devices('GPU'):
+        tf.config.experimental.set_memory_growth(tf.config.list_physical_devices('GPU')[0], True)
+    save_locally = None
+    load_locally = None
+    BATCH_SIZE = 8
+
+tf.config.optimizer.set_jit(True)
+
+print(f'Batch size: {BATCH_SIZE}.')
+
+SHUFFLE_BUFFER = BATCH_SIZE * 5
+AUTOTUNE = tf.data.AUTOTUNE
+
 df = pd.read_csv(TRAIN_CSV)
 df["image_path"] = df["image_id"].apply(lambda x: os.path.join(IMAGE_DIR, "train", x + ".jpg"))
 test_df = pd.read_csv(TEST_CSV)
