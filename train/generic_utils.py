@@ -1,5 +1,5 @@
 try:
-    assert INTERACTIVE
+    assert not INTERACTIVE
 except Exception:
     from setups import *
 

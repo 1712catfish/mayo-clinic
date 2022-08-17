@@ -5,7 +5,6 @@ except Exception:
 
 INPUT_PATH = '../input/mayo-clinic-strip-ai'
 IMAGE_DIR = '../input/jpg-images-strip-ai'
-
 GCS_PATH = 'gs://kds-dcf15753e60a6c61a37238f890ada2818c287fd8745815b311985bc8'
 
 TRAIN_DIR = os.path.join(INPUT_PATH, 'train')
