@@ -4,6 +4,7 @@ except Exception:
     from generic_utils import *
 
 
+# DATASET UTILS
 def tf_load_image(img_path, img_shape=(512, 512, 3)):
     """ Load an image with the correct size and shape """
     img = tf.image.decode_image(tf.io.read_file(img_path), channels=img_shape[-1])
@@ -19,10 +20,10 @@ def augment_batch(img_batch):
     return img_batch
 
 
-def get_dataset(df, shuffle=True, buffer=512,
-                batch_size=None, drop_remainder=True,
-                cache=True, repeat=True,
-                augment=True, ):
+def create_dataset(df, shuffle=True, buffer=512,
+                   batch_size=None, drop_remainder=True,
+                   cache=True, repeat=True,
+                   augment=True, ):
     dataset = tf.data.Dataset.from_tensor_slices((df.image_path.values, df.label.map(S2I_LBL_MAP).values))
     dataset = dataset.map(lambda x, y: (tf_load_image(x, INPUT_SHAPE), tf.one_hot(y, N_CLASSES, dtype=tf.uint8)),
                           num_parallel_calls=AUTOTUNE)
@@ -41,6 +42,7 @@ def get_dataset(df, shuffle=True, buffer=512,
     return dataset
 
 
+# MODEL UTILS
 def build_mcsai_notile_model(tf_keras_model_fn, _weights="imagenet", top_dropout=0.5):
     _inputs = tf.keras.layers.Input(shape=INPUT_SHAPE, dtype=tf.float32)
     _bb = tf_keras_model_fn(include_top=False, input_shape=INPUT_SHAPE, weights=_weights, pooling="avg")
@@ -87,25 +89,24 @@ AUTOTUNE = tf.data.AUTOTUNE
 if TPU is not None:
     BATCH_SIZE = 64 * STRATEGY.num_replicas_in_sync
 else:
-    BATCH_SIZE = 8
+    BATCH_SIZE = 4
 SHUFFLE_BUFFER = BATCH_SIZE * 5
 print(f'Batch size: {BATCH_SIZE}')
 
 df = pd.read_csv(TRAIN_CSV)
-test_df = pd.read_csv(TEST_CSV)
-
 df["image_path"] = df["image_id"].apply(lambda x: os.path.join(IMAGE_DIR, "train", x + ".jpg"))
-test_df["image_path"] = test_df["image_id"].apply(lambda x: os.path.join(IMAGE_DIR, "test", x + ".jpg"))
-
-train_df, val_df = k_fold_train_test_split(df.copy())
+train_df, val_df = k_fold_train_test_split(df)
 N_TRAIN, N_VAL = len(train_df), len(val_df)
-
-train_ds = get_dataset(train_df, buffer=SHUFFLE_BUFFER, batch_size=BATCH_SIZE)
-val_ds = get_dataset(val_df, shuffle=False,
-                     batch_size=BATCH_SIZE, drop_remainder=False,
-                     cache=False, repeat=False, augment=False)
 
 class_weights = get_class_weights(train_df)
 print('Auto class weight:')
 for k, v in class_weights.items():
     print(f"  {k}: {v:.4f}")
+
+train_ds = create_dataset(train_df, buffer=SHUFFLE_BUFFER, batch_size=BATCH_SIZE)
+val_ds = create_dataset(val_df, shuffle=False,
+                        batch_size=BATCH_SIZE, drop_remainder=False,
+                        cache=False, repeat=False, augment=False)
+
+test_df = pd.read_csv(TEST_CSV)
+test_df["image_path"] = test_df["image_id"].apply(lambda x: os.path.join(IMAGE_DIR, "test", x + ".jpg"))
