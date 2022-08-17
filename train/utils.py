@@ -1,4 +1,4 @@
-print(INPUT_PATH)
+# print(INPUT_PATH)
 
 try:
     assert INTERACTIVE
