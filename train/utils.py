@@ -1,3 +1,5 @@
+print(INPUT_PATH)
+
 try:
     assert INTERACTIVE
 except Exception:
@@ -55,7 +57,6 @@ def get_class_weights(df):
     return _class_weights
 
 
-print(INPUT_PATH)
 TRAIN_DIR = os.path.join(INPUT_PATH, 'train')
 TRAIN_CSV = os.path.join(INPUT_PATH, 'train.csv')
 print(TRAIN_CSV)
