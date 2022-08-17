@@ -1,7 +1,6 @@
 try:
     assert INTERACTIVE
 except Exception:
-    print(1)
     from generic_utils import *
 
 
@@ -63,7 +62,7 @@ TEST_CSV = os.path.join(INPUT_PATH, 'test.csv')
 
 try:
     TPU = tf.distribute.cluster_resolver.TPUClusterResolver()
-    print('Using TPU.')
+    print('Using TPU')
     tf.config.experimental_connect_to_cluster(TPU)
     tf.tpu.experimental.initialize_tpu_system(TPU)
     STRATEGY = tf.distribute.experimental.TPUStrategy(TPU)
@@ -74,7 +73,7 @@ try:
 
 except ValueError:
     TPU = None
-    print('Using GPU/CPU.')
+    print('Using GPU/CPU')
     # Yield the default distribution strategy in Tensorflow
     #   --> Works on CPU and single GPU.
     STRATEGY = tf.distribute.get_strategy()
@@ -86,7 +85,7 @@ except ValueError:
 
 tf.config.optimizer.set_jit(True)
 
-print(f'Batch size: {BATCH_SIZE}.')
+print(f'Batch size: {BATCH_SIZE}')
 
 SHUFFLE_BUFFER = BATCH_SIZE * 5
 AUTOTUNE = tf.data.AUTOTUNE
