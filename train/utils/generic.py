@@ -21,6 +21,12 @@ def k_fold_train_test_split(df, n_splits=8):
         return train_df, val_df
 
 
+def auto_class_weight(y):
+    classes = set(y)
+    weights = class_weight.compute_class_weight('balanced', classes=classes, y=y)
+    return {k: v for k, v in zip(classes, weights)}
+
+
 class GarbageCollectorCallback(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs=None):
         gc.collect()
