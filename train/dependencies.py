@@ -1,26 +1,19 @@
-print("\n... IMPORTS STARTING ...\n")
-
-print("\n\tVERSION INFORMATION")
+print("VERSION INFORMATION")
 
 # Machine Learning and Data Science Imports
 import tensorflow as tf
 
-print(f"\t\t– TENSORFLOW VERSION: {tf.__version__}")
 import tensorflow_hub as tfhub
 
-print(f"\t\t– TENSORFLOW HUB VERSION: {tfhub.__version__}")
 import tensorflow_addons as tfa
 
-print(f"\t\t– TENSORFLOW ADDONS VERSION: {tfa.__version__}")
 import pandas as pd
 
 pd.options.mode.chained_assignment = None
 import numpy as np
 
-print(f"\t\t– NUMPY VERSION: {np.__version__}")
 import sklearn
 
-print(f"\t\t– SKLEARN VERSION: {sklearn.__version__}")
 from sklearn.preprocessing import RobustScaler, PolynomialFeatures
 from pandarallel import pandarallel
 
@@ -81,7 +74,6 @@ from PIL import Image, ImageEnhance
 Image.MAX_IMAGE_PIXELS = 5_000_000_000
 import matplotlib
 
-print(f"\t\t– MATPLOTLIB VERSION: {matplotlib.__version__}")
 from matplotlib import animation, rc
 
 rc('animation', html='jshtml')
@@ -91,7 +83,8 @@ import cv2
 
 import plotly.io as pio
 
-print(pio.renderers)
+
+# print(pio.renderers)
 
 
 def seed_it_all(seed=7):
@@ -103,5 +96,3 @@ def seed_it_all(seed=7):
 
 
 seed_it_all()
-
-print("\n\n... IMPORTS COMPLETE ...\n")
