@@ -28,19 +28,19 @@ def get_dataset(df, shuffle=True, buffer=512,
                 cache=True, repeat=True,
                 augment=True, ):
     dataset = tf.data.Dataset.from_tensor_slices((df.image_path.values, df.label.map(S2I_LBL_MAP).values))
-    # dataset = dataset.map(parse_function, num_parallel_calls=AUTOTUNE)
+    dataset = dataset.map(parse_function, num_parallel_calls=AUTOTUNE)
     if shuffle:
         dataset = dataset.shuffle(buffer)
-    # if batch_size is not None:
-    #     dataset = dataset.batch(batch_size, drop_remainder=drop_last)
-    # if cache:
-    #     dataset = dataset.cache()
-    # if repeat:
-    #     dataset = dataset.cache()
-    # if augment:
-    #     dataset = dataset.map(lambda x, y: (augment_batch(x), y), num_parallel_calls=AUTOTUNE)
-    # dataset = dataset.map(lambda x, y: (tf.cast(x, tf.float32), y), num_parallel_calls=AUTOTUNE)
-    # dataset = dataset.prefetch(tf.data.AUTOTUNE)
+    if batch_size is not None:
+        dataset = dataset.batch(batch_size, drop_remainder=drop_last)
+    if cache:
+        dataset = dataset.cache()
+    if repeat:
+        dataset = dataset.cache()
+    if augment:
+        dataset = dataset.map(lambda x, y: (augment_batch(x), y), num_parallel_calls=AUTOTUNE)
+    dataset = dataset.map(lambda x, y: (tf.cast(x, tf.float32), y), num_parallel_calls=AUTOTUNE)
+    dataset = dataset.prefetch(tf.data.AUTOTUNE)
     return dataset
 
 
@@ -86,6 +86,7 @@ except ValueError:
     BATCH_SIZE = 8
 
 tf.config.optimizer.set_jit(True)
+# tf.autograph.set_verbosity(3, True)
 
 print(f'Batch size: {BATCH_SIZE}')
 
