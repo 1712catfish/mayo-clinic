@@ -1,13 +1,8 @@
-
-
 try:
     assert INTERACTIVE
 except Exception:
     print(1)
     from generic_utils import *
-
-print(INPUT_PATH)
-
 
 
 def tf_load_image(img_path, img_shape=(512, 512, 3)):
@@ -63,8 +58,6 @@ def get_class_weights(df):
 
 TRAIN_DIR = os.path.join(INPUT_PATH, 'train')
 TRAIN_CSV = os.path.join(INPUT_PATH, 'train.csv')
-print(TRAIN_CSV)
-
 TEST_DIR = os.path.join(INPUT_PATH, 'test')
 TEST_CSV = os.path.join(INPUT_PATH, 'test.csv')
 
@@ -114,5 +107,6 @@ val_ds = get_dataset(val_df, shuffle=False,
                      cache=False, repeat=False, augment=False)
 
 class_weights = get_class_weights(train_df)
+print('Auto class weight:')
 for k, v in class_weights.items():
-    print(f"{k} --> {v:.4f}")
+    print(f"    {k}: {v:.4f}")
