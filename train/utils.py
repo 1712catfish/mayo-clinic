@@ -24,8 +24,8 @@ def get_dataset(df, shuffle=True, buffer=512,
                 cache=True, repeat=True,
                 augment=True, ):
     dataset = tf.data.Dataset.from_tensor_slices((df.image_path.values, df.label.map(S2I_LBL_MAP).values))
-    # dataset = dataset.map(lambda x, y: (tf_load_image(x, INPUT_SHAPE), tf.one_hot(y, N_CLASSES, dtype=tf.uint8)),
-    #                       num_parallel_calls=AUTOTUNE)
+    dataset = dataset.map(lambda x, y: (tf_load_image(x, INPUT_SHAPE), tf.one_hot(y, N_CLASSES, dtype=tf.uint8)),
+                          num_parallel_calls=AUTOTUNE)
     # if shuffle:
     #     dataset = dataset.shuffle(buffer)
     # if batch_size is not None:
