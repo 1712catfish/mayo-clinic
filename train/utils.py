@@ -6,22 +6,9 @@ except Exception:
 
 def tf_load_image(img_path, img_shape=(512, 512, 3)):
     """ Load an image with the correct size and shape """
-
-
-@tf.function
-def tf_load_image(img_path):
-    """ Load an image with the correct size and shape """
-    img = tf.image.decode_image(tf.io.read_file(img_path), channels=INPUT_SHAPE[-1])
-    img = tf.reshape(img, INPUT_SHAPE)
+    img = tf.image.decode_image(tf.io.read_file(img_path), channels=img_shape[-1])
+    img = tf.reshape(img, img_shape)
     return img
-
-
-@tf.function
-def parse_function(img_path, label):
-    img = tf.image.decode_image(tf.io.read_file(img_path), channels=INPUT_SHAPE[-1])
-    img = tf.reshape(img, INPUT_SHAPE)
-    label = tf.one_hot(label, N_CLASSES, dtype=tf.uint8)
-    return img, label
 
 
 def augment_batch(img_batch):
@@ -37,7 +24,8 @@ def get_dataset(df, shuffle=True, buffer=512,
                 cache=True, repeat=True,
                 augment=True, ):
     dataset = tf.data.Dataset.from_tensor_slices((df.image_path.values, df.label.map(S2I_LBL_MAP).values))
-    dataset = dataset.map(lambda x, y: (tf_load_image(x), tf.one_hot(y, N_CLASSES, dtype=tf.uint8)), num_parallel_calls=AUTOTUNE)
+    dataset = dataset.map(lambda x, y: (tf_load_image(x, INPUT_SHAPE), tf.one_hot(y, N_CLASSES, dtype=tf.uint8)),
+                          num_parallel_calls=AUTOTUNE)
     if shuffle:
         dataset = dataset.shuffle(buffer)
     if batch_size is not None:
