@@ -3,8 +3,8 @@
 try:
     assert INTERACTIVE
 except Exception:
-    pass
-    # from generic_utils import *
+    print(1)
+    from generic_utils import *
 
 print(INPUT_PATH)
 
