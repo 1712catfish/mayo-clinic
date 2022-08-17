@@ -1,10 +1,13 @@
 
+
 try:
     assert INTERACTIVE
 except Exception:
-    from generic_utils import *
+    pass
+    # from generic_utils import *
 
 print(INPUT_PATH)
+
 
 
 def tf_load_image(img_path, img_shape=(512, 512, 3)):
