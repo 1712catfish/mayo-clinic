@@ -9,9 +9,9 @@ def tf_load_image(img_path, img_shape=(512, 512, 3)):
 
 
 def parse_function(img_path, label):
-    # img = tf.image.decode_image(tf.io.read_file(img_path), channels=INPUT_SHAPE[-1])
-    # img = tf.reshape(img, INPUT_SHAPE)
-    # label = tf.one_hot(label, N_CLASSES, dtype=tf.uint8)
+    img = tf.image.decode_image(tf.io.read_file(img_path), channels=INPUT_SHAPE[-1])
+    img = tf.reshape(img, INPUT_SHAPE)
+    label = tf.one_hot(label, N_CLASSES, dtype=tf.uint8)
     return img_path, label
 
 
