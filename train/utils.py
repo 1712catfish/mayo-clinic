@@ -59,6 +59,7 @@ TRAIN_DIR = os.path.join(INPUT_PATH, 'train')
 TRAIN_CSV = os.path.join(INPUT_PATH, 'train.csv')
 TEST_DIR = os.path.join(INPUT_PATH, 'test')
 TEST_CSV = os.path.join(INPUT_PATH, 'test.csv')
+print(1)
 
 try:
     TPU = tf.distribute.cluster_resolver.TPUClusterResolver()
