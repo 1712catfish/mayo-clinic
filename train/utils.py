@@ -86,7 +86,6 @@ except ValueError:
     BATCH_SIZE = 8
 
 tf.config.optimizer.set_jit(True)
-tf.autograph.set_verbosity(3, True)
 
 print(f'Batch size: {BATCH_SIZE}')
 
