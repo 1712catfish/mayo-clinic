@@ -1,4 +1,4 @@
-from train.configure_paras import *
+from train.configure_parameters import *
 
 
 def build_mcsai_notile_model(tf_keras_model_fn, _weights="imagenet", top_dropout=0.5):
