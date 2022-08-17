@@ -1,7 +1,5 @@
-try:
-    INTERACTIVE
-except Exception:
-    from compile import *
+from train.setup_data import *
+from train.setup_train import *
 
 history = mcsai_nt_model.fit(train_ds, validation_data=val_ds,
                              epochs=12, callbacks=callbacks,

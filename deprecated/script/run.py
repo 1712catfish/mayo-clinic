@@ -1,10 +1,10 @@
 print('Importing dependencies: ', end='')
-with open('train/dependencies.py') as f:
+with open('train/setup_libraries.py') as f:
     exec(compile(f.read(), '', 'exec'))
 print('Success.')
 
 print('Setting up light variables: ', end='')
-with open('train/setups.py') as f:
+with open('train/configs.py') as f:
     exec(compile(f.read(), '', 'exec'))
 print('Success.')
 
@@ -14,11 +14,11 @@ with open('train/heavy_setups.py') as f:
 print('Success.')
 
 print('Building utilities: ', end='')
-with open('train/utils.py') as f:
+with open('train/model.py') as f:
     exec(compile(f.read(), '', 'exec'))
 print('Success.')
 
 print('Training: ', end='')
-with open('train/compile.py') as f:
+with open('train/model.py') as f:
     exec(compile(f.read(), '', 'exec'))
 print('Success.')

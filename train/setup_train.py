@@ -1,7 +1,4 @@
-try:
-    INTERACTIVE
-except Exception:
-    from utils import *
+from utils.model import *
 
 with STRATEGY.scope():
     OPTIMIZER = tf.keras.optimizers.Adam(learning_rate=0.01)

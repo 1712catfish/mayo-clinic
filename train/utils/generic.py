@@ -1,7 +1,4 @@
-try:
-    INTERACTIVE
-except Exception:
-    from setups import *
+from train.setup_libraries import *
 
 
 def flatten(nested_list):
