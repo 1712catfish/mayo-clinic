@@ -19,6 +19,6 @@ with open('train/utils.py') as f:
 print('Success.')
 
 print('Training: ', end='')
-with open('train/train.py') as f:
+with open('train/compile.py') as f:
     exec(compile(f.read(), '', 'exec'))
 print('Success.')
