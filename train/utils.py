@@ -84,6 +84,7 @@ except ValueError:
     BATCH_SIZE = 8
 
 tf.config.optimizer.set_jit(True)
+tf.autograph.set_verbosity(3, True)
 
 print(f'Batch size: {BATCH_SIZE}')
 
@@ -108,4 +109,4 @@ val_ds = get_dataset(val_df, shuffle=False,
 class_weights = get_class_weights(train_df)
 print('Auto class weight:')
 for k, v in class_weights.items():
-    print(f"    {k}: {v:.4f}")
+    print(f"  {k}: {v:.4f}")
