@@ -20,7 +20,7 @@ def augment_batch(img_batch):
 
 
 def get_dataset(df, shuffle=True, buffer=512,
-                batch_size=None, drop_last=False,
+                batch_size=None, drop_remainder=True,
                 cache=True, repeat=True,
                 augment=True, ):
     dataset = tf.data.Dataset.from_tensor_slices((df.image_path.values, df.label.map(S2I_LBL_MAP).values))
@@ -29,7 +29,7 @@ def get_dataset(df, shuffle=True, buffer=512,
     if shuffle:
         dataset = dataset.shuffle(buffer)
     if batch_size is not None:
-        dataset = dataset.batch(batch_size, drop_remainder=drop_last)
+        dataset = dataset.batch(batch_size, drop_remainder=drop_remainder)
     if cache:
         dataset = dataset.cache()
     if repeat:
@@ -69,7 +69,6 @@ try:
     save_locally = tf.saved_model.SaveOptions(experimental_io_device='/job:localhost')
     load_locally = tf.saved_model.LoadOptions(experimental_io_device='/job:localhost')
     IMAGE_DIR = GCS_PATH
-    BATCH_SIZE = 64 * STRATEGY.num_replicas_in_sync
 except ValueError:
     TPU = None
     print('Using GPU/CPU')
@@ -80,29 +79,30 @@ except ValueError:
         tf.config.experimental.set_memory_growth(tf.config.list_physical_devices('GPU')[0], True)
     save_locally = None
     load_locally = None
-    BATCH_SIZE = 8
 
 tf.config.optimizer.set_jit(True)
 # tf.autograph.set_verbosity(3, True)
-
-print(f'Batch size: {BATCH_SIZE}')
-
-SHUFFLE_BUFFER = BATCH_SIZE * 5
 AUTOTUNE = tf.data.AUTOTUNE
 
+if TPU is not None:
+    BATCH_SIZE = 64 * STRATEGY.num_replicas_in_sync
+else:
+    BATCH_SIZE = 8
+SHUFFLE_BUFFER = BATCH_SIZE * 5
+print(f'Batch size: {BATCH_SIZE}')
+
 df = pd.read_csv(TRAIN_CSV)
-df["image_path"] = df["image_id"].apply(lambda x: os.path.join(IMAGE_DIR, "train", x + ".jpg"))
 test_df = pd.read_csv(TEST_CSV)
+
+df["image_path"] = df["image_id"].apply(lambda x: os.path.join(IMAGE_DIR, "train", x + ".jpg"))
 test_df["image_path"] = test_df["image_id"].apply(lambda x: os.path.join(IMAGE_DIR, "test", x + ".jpg"))
 
 train_df, val_df = k_fold_train_test_split(df.copy())
 N_TRAIN, N_VAL = len(train_df), len(val_df)
 
-train_ds = get_dataset(train_df, shuffle=True, buffer=SHUFFLE_BUFFER,
-                       batch_size=BATCH_SIZE, drop_last=True,
-                       cache=True, repeat=True, augment=True)
+train_ds = get_dataset(train_df, buffer=SHUFFLE_BUFFER, batch_size=BATCH_SIZE)
 val_ds = get_dataset(val_df, shuffle=False,
-                     batch_size=BATCH_SIZE, drop_last=False,
+                     batch_size=BATCH_SIZE, drop_remainder=False,
                      cache=False, repeat=False, augment=False)
 
 class_weights = get_class_weights(train_df)
