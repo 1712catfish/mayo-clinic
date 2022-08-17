@@ -4,7 +4,7 @@ with open('train/setup_libraries.py') as f:
 print('Success.')
 
 print('Setting up light variables: ', end='')
-with open('train/configs.py') as f:
+with open('train/configure_paras.py') as f:
     exec(compile(f.read(), '', 'exec'))
 print('Success.')
 

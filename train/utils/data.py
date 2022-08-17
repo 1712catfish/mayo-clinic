@@ -1,4 +1,4 @@
-from train.configs import *
+from train.configure_paras import *
 
 AUTOTUNE = tf.data.AUTOTUNE
 
