@@ -1,5 +1,5 @@
 try:
-    assert INTERACTIVE
+    INTERACTIVE
 except Exception:
     from generic_utils import *
 
