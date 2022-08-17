@@ -28,9 +28,9 @@ def get_dataset(df, shuffle=True, buffer=512,
                 cache=True, repeat=True,
                 augment=True, ):
     dataset = tf.data.Dataset.from_tensor_slices((df.image_path.values, df.label.map(S2I_LBL_MAP).values))
-    dataset = dataset.map(parse_function, num_parallel_calls=AUTOTUNE)
-    # if shuffle:
-    #     dataset = dataset.shuffle(buffer)
+    # dataset = dataset.map(parse_function, num_parallel_calls=AUTOTUNE)
+    if shuffle:
+        dataset = dataset.shuffle(buffer)
     # if batch_size is not None:
     #     dataset = dataset.batch(batch_size, drop_remainder=drop_last)
     # if cache:
