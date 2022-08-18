@@ -1,6 +1,7 @@
 try:
     INTERACTIVE
 except Exception:
+    from generic_utils import *
     from train.config import *
 
 AUTOTUNE = tf.data.AUTOTUNE
@@ -14,44 +15,12 @@ def parse_function(filename, label):
     return image, tf.one_hot(label, N_CLASSES, dtype=tf.uint8)
 
 
-def augment(image, label):
-    p_spatial = tf.random.uniform([], 0, 1., dtype=tf.float32)
-    p_rotate = tf.random.uniform([], 0, 1., dtype=tf.float32)
-    p_pixel = tf.random.uniform([], 0, 1., dtype=tf.float32)
-    p_shear = tf.random.uniform([], 0, 1., dtype=tf.float32)
-    p_crop = tf.random.uniform([], 0, 1., dtype=tf.float32)
-
-    image = tf.image.random_flip_up_down(image)
-    image = tf.image.random_flip_left_right(image)
-
-    if p_spatial > .75:
-        image = tf.image.transpose(image)
-
-    if p_pixel >= .2:
-        if p_pixel >= .8:
-            image = tf.image.random_saturation(image, lower=.7, upper=1.3)
-        elif p_pixel >= .6:
-            image = tf.image.random_contrast(image, lower=.8, upper=1.2)
-        elif p_pixel >= .4:
-            image = tf.image.random_brightness(image, max_delta=.1)
-        else:
-            image = tf.image.adjust_gamma(image, gamma=.6)
-
-    if p_crop > .7:
-        if p_crop > .9:
-            image = tf.image.central_crop(image, central_fraction=.6)
-        elif p_crop > .8:
-            image = tf.image.central_crop(image, central_fraction=.7)
-        else:
-            image = tf.image.central_crop(image, central_fraction=.8)
-    elif p_crop > .4:
-        crop_size = tf.random.uniform([], int(IMAGE_SHAPE[0] * .6), IMAGE_SHAPE[0], dtype=tf.int32)
-        image = tf.image.random_crop(image, size=[crop_size, crop_size, IMAGE_SHAPE[2]])
-
-    image = tf.image.resize(image, size=IMAGE_SHAPE[:2])
-    image = tf.reshape(image, IMAGE_SHAPE)
-
-    return image, label
+def simple_augment(img_batch, label):
+    img_batch = tf.image.random_brightness(img_batch, 0.2)
+    img_batch = tf.image.random_contrast(img_batch, 0.5, 2.0)
+    img_batch = tf.image.random_saturation(img_batch, 0.75, 1.25)
+    img_batch = tf.image.random_hue(img_batch, 0.1)
+    return img_batch, label
 
 
 def create_dataset(df, ordered=False,
@@ -65,7 +34,7 @@ def create_dataset(df, ordered=False,
         dataset = dataset.with_options(options)
     dataset = dataset.map(parse_function, num_parallel_calls=AUTOTUNE)
     if augmented:
-        dataset = dataset.map(augment, num_parallel_calls=AUTOTUNE)
+        dataset = dataset.map(simple_augment, num_parallel_calls=AUTOTUNE)
     if not ordered:
         dataset = dataset.shuffle(1024)
     if batch_size is not None:

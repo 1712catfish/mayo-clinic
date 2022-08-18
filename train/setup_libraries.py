@@ -2,6 +2,7 @@
 import tensorflow as tf
 import tensorflow_hub as tfhub
 import tensorflow_addons as tfa
+import tensorflow.keras.backend as K
 import pandas as pd
 
 pd.options.mode.chained_assignment = None
