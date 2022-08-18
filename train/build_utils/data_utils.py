@@ -2,7 +2,7 @@ try:
     INTERACTIVE
 except Exception:
     from generic_utils import *
-    from train.config import *
+    from train.setup_configs import *
 
 AUTOTUNE = tf.data.AUTOTUNE
 
