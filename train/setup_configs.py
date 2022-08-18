@@ -28,6 +28,6 @@ else:
     BATCH_SIZE = 4
     # IMAGE_DIR = INPUT_PATH
 
-print('Batch size:', BATCH_SIZE)
+print('Auto batch size:', BATCH_SIZE)
 print('TRAIN_DIR:', TRAIN_DIR)
 print('TRAIN_CSV:', TRAIN_CSV)
