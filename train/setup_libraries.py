@@ -3,11 +3,13 @@ import tensorflow as tf
 import tensorflow_hub as tfhub
 import tensorflow_addons as tfa
 import pandas as pd
+
 pd.options.mode.chained_assignment = None
 import numpy as np
 import sklearn
 from sklearn.preprocessing import RobustScaler, PolynomialFeatures
 from pandarallel import pandarallel
+
 pandarallel.initialize()
 from sklearn.model_selection import GroupKFold, StratifiedKFold
 from sklearn.utils import class_weight
@@ -49,6 +51,7 @@ import os
 import gc
 import re
 from pathlib import Path
+from transformers.optimization_tf import WarmUp, AdamWeightDecay
 
 # Visualization Imports
 from matplotlib.colors import ListedColormap
@@ -79,10 +82,10 @@ import plotly.io as pio
 
 # print(pio.renderers)
 
-
 def seed_it_all(seed=7):
     """ Attempt to be Reproducible """
     os.environ['PYTHONHASHSEED'] = str(seed)
+    os.environ['TF_DETERMINISTIC_OPS'] = "1"
     random.seed(seed)
     np.random.seed(seed)
     tf.random.set_seed(seed)

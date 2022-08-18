@@ -19,5 +19,5 @@ val_ds = create_dataset(val_df, ordered=True,
 test_df = pd.read_csv(TEST_CSV)
 test_df["image_path"] = test_df["image_id"].apply(lambda x: os.path.join(IMAGE_DIR, "test", x + ".jpg"))
 
-steps_per_epoch = N_TRAIN // BATCH_SIZE
-validation_step = N_VAL // BATCH_SIZE
+STEPS_PER_EPOCH = N_TRAIN // BATCH_SIZE
+VALIDATION_STEPS = N_VAL // BATCH_SIZE

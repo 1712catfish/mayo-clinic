@@ -27,26 +27,54 @@ def auto_class_weight(y):
     return {k: v for k, v in zip(classes, weights)}
 
 
+def plot_history(history, metrics=None):
+    if metrics is None:
+        metrics = ['acc']
+    print(history.history.keys())
+
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title('Model loss')
+    plt.ylabel('loss')
+    plt.xlabel('Epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.show()
+
+    for metric in metrics:
+        plt.plot(history.history[metric])
+        plt.plot(history.history[f'val_{metric}'])
+        plt.title(f'model {metric}')
+        plt.ylabel(metric)
+        plt.xlabel('Epoch')
+        plt.legend(['train', 'test'], loc='upper left')
+        plt.show()
+
+
 class GarbageCollectorCallback(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs=None):
         gc.collect()
         tf.keras.backend.clear_session()
 
 
-def plot_history(_history, fold_num="1", metrics="acc"):
-    """ TBD """
-    fig = px.line(_history.history,
-                  x=range(len(_history.history["loss"])),
-                  y=["loss", "val_loss"],
-                  labels={"value": "Loss (log-axis)", "x": "Epoch #"},
-                  title=f"<b>FOLD {fold_num} MODEL - LOSS</b>", log_y=True
-                  )
-    fig.show()
-
-    for _m in metrics:
-        fig = px.line(_history.history,
-                      x=range(len(_history.history[_m])),
-                      y=[_m, f"val_{_m}"],
-                      labels={"value": f"{_m} (log-axis)", "x": "Epoch #"},
-                      title=f"<b>FOLD {fold_num} MODEL - {_m}</b>", log_y=True)
-        fig.show()
+def AdamW_with_warmup(
+        decay_steps,
+        warmup_steps,
+        learning_rate_decay_rate=0.96,
+        initial_learning_rate=0.01,
+        weight_decay_rate=0.0,
+        staircase=False,
+        name="AdamWeightDecay",
+):
+    return AdamWeightDecay(
+        weight_decay_rate=weight_decay_rate,
+        name=name,
+        learning_rate=WarmUp(
+            initial_learning_rate=initial_learning_rate,
+            warmup_steps=warmup_steps,
+            decay_schedule_fn=tf.keras.optimizers.schedules.ExponentialDecay(
+                initial_learning_rate=initial_learning_rate,
+                decay_steps=decay_steps,
+                decay_rate=learning_rate_decay_rate,
+                staircase=staircase)
+        )
+    )

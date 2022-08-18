@@ -14,11 +14,11 @@ with open('train/heavy_setups.py') as f:
 print('Success.')
 
 print('Building utilities: ', end='')
-with open('train/model.py') as f:
+with open('train/training_utils.py') as f:
     exec(compile(f.read(), '', 'exec'))
 print('Success.')
 
 print('Training: ', end='')
-with open('train/model.py') as f:
+with open('train/training_utils.py') as f:
     exec(compile(f.read(), '', 'exec'))
 print('Success.')

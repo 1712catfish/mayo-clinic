@@ -16,3 +16,20 @@
 #     img_batch = tf.image.random_saturation(img_batch, 0.75, 1.25)
 #     img_batch = tf.image.random_hue(img_batch, 0.1)
 #     return img_batch, label
+
+# def plot_history(_history, fold_num="1", metrics="acc"):
+#     """ TBD """
+#     fig = px.line(_history.history,
+#                   x=range(len(_history.history["loss"])),
+#                   y=["loss", "val_loss"],
+#                   labels={"value": "Loss (log-axis)", "x": "Epoch #"},
+#                   title=f"<b>FOLD {fold_num} MODEL - LOSS</b>", log_y=True)
+#     fig.show()
+#
+#     for _m in metrics:
+#         fig = px.line(_history.history,
+#                       x=range(len(_history.history[_m])),
+#                       y=[_m, f"val_{_m}"],
+#                       labels={"value": f"{_m} (log-axis)", "x": "Epoch #"},
+#                       title=f"<b>FOLD {fold_num} MODEL - {_m}</b>", log_y=True)
+#         fig.show()

@@ -12,11 +12,11 @@ def parse_function(filename, label):
 
 
 def augment(image, label):
-    p_spatial = tf.random.uniform([], 0, 1.0, dtype=tf.float32)
-    p_rotate = tf.random.uniform([], 0, 1.0, dtype=tf.float32)
-    p_pixel = tf.random.uniform([], 0, 1.0, dtype=tf.float32)
-    p_shear = tf.random.uniform([], 0, 1.0, dtype=tf.float32)
-    p_crop = tf.random.uniform([], 0, 1.0, dtype=tf.float32)
+    p_spatial = tf.random.uniform([], 0, 1., dtype=tf.float32)
+    p_rotate = tf.random.uniform([], 0, 1., dtype=tf.float32)
+    p_pixel = tf.random.uniform([], 0, 1., dtype=tf.float32)
+    p_shear = tf.random.uniform([], 0, 1., dtype=tf.float32)
+    p_crop = tf.random.uniform([], 0, 1., dtype=tf.float32)
 
     image = tf.image.random_flip_up_down(image)
     image = tf.image.random_flip_left_right(image)
