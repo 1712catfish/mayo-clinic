@@ -25,10 +25,9 @@ def k_fold_train_test_split(df, n_splits=8):
 
 
 def auto_class_weight(y):
-    classes = set(y)
+    classes = list(set(y))
     weights = class_weight.compute_class_weight('balanced', classes=classes, y=y)
     return {k: v for k, v in zip(classes, weights)}
-
 
 def plot_history(history, metrics=None):
     if metrics is None:
