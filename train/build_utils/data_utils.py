@@ -1,4 +1,7 @@
-from train.configure_parameters import *
+try:
+    INTERACTIVE
+except Exception:
+    from train.config import *
 
 AUTOTUNE = tf.data.AUTOTUNE
 

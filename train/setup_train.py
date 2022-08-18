@@ -1,11 +1,14 @@
-from utils.training_utils import *
-from setup_data import *
+try:
+    INTERACTIVE
+except Exception:
+    from build_utils.training_utils import *
+    from setup_data import *
 
 EPOCHS = 12
 
 with STRATEGY.scope():
-    OPTIMIZER = AdamW_with_warmup(decay_steps=STEPS_PER_EPOCH // 4,
-                                  warmup_steps=STEPS_PER_EPOCH,
+    OPTIMIZER = AdamW_with_warmup(decay_steps=STEPS_PER_EPOCH,
+                                  warmup_steps=4 * STEPS_PER_EPOCH,
                                   learning_rate_decay_rate=0.75,
                                   initial_learning_rate=1e-5,
                                   weight_decay_rate=0.0, )

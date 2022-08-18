@@ -1,5 +1,7 @@
-from train.setup_device import *
-from train.setup_libraries import *
+try:
+    INTERACTIVE
+except Exception:
+    from setup_device import *
 
 INPUT_PATH = Path('/kaggle/input/mayo-clinic-strip-ai')
 IMAGE_DIR = Path('/kaggle/input/jpg-images-strip-ai')

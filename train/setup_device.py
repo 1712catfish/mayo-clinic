@@ -1,4 +1,7 @@
-from train.setup_libraries import *
+try:
+    INTERACTIVE
+except Exception:
+    from setup_libraries import *
 
 MIXED_PRECISION = False
 XLA_ACCELERATE = False

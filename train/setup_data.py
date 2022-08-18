@@ -1,5 +1,8 @@
-from train.utils.data import *
-from train.utils.generic_utils import *
+try:
+    INTERACTIVE
+except Exception:
+    from build_utils.generic_utils import *
+    from build_utils.data_utils import *
 
 df = pd.read_csv(TRAIN_CSV)
 df["image_path"] = df["image_id"].apply(lambda x: os.path.join(IMAGE_DIR, "train", x + ".jpg"))

@@ -1,4 +1,7 @@
-from train.configure_parameters import *
+try:
+    INTERACTIVE
+except Exception:
+    from train.config import *
 
 
 def mcsai_notile_model(tf_keras_model_fn, _weights="imagenet", top_dropout=0.5):
