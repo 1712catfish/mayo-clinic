@@ -10,7 +10,7 @@ AUTOTUNE = tf.data.AUTOTUNE
 def parse_function(filename, label):
     image_string = tf.io.read_file(filename)
     image = tf.io.decode_image(image_string, channels=3, expand_animations=False)
-    image = tf.image.resize(image, IMAGE_SHAPE[0])
+    image = tf.image.resize(image, IMAGE_SHAPE[:2])
     image = tf.cast(image, tf.float32) / 255.
     return image, tf.one_hot(label, N_CLASSES, dtype=tf.uint8)
 

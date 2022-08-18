@@ -8,9 +8,9 @@ df = pd.read_csv(TRAIN_CSV)
 df["image_path"] = df["image_id"].apply(lambda x: os.path.join(IMAGE_DIR, "train", x + ".jpg"))
 train_df, val_df = k_fold_train_test_split(df)
 
-class_weight = auto_class_weight(train_df.label)
+cw = auto_class_weight(train_df.label)
 print('Auto class weight:')
-for k, v in class_weight.items():
+for k, v in cw.items():
     print(f"  {k}: {v:.4f}")
 
 N_TRAIN, N_VAL = len(train_df), len(val_df)
