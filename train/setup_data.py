@@ -1,8 +1,8 @@
 try:
     INTERACTIVE
 except Exception:
-    from build_utils.generic_utils import *
-    from build_utils.data_utils import *
+    from build_utils.generic import *
+    from build_utils.dataset import *
 
 df = pd.read_csv(TRAIN_CSV)
 df["image_path"] = df["image_id"].apply(lambda x: os.path.join(TRAIN_DIR, x + ".jpg"))

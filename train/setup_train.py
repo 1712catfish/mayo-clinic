@@ -1,7 +1,7 @@
 try:
     INTERACTIVE
 except Exception:
-    from build_utils.training_utils import *
+    from build_utils.train import *
     from setup_data import *
 
 EPOCHS = 12
