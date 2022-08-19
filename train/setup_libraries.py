@@ -58,12 +58,12 @@ from transformers.optimization_tf import WarmUp, AdamWeightDecay
 from matplotlib.colors import ListedColormap
 from matplotlib.patches import Rectangle
 import matplotlib.patches as patches
-import plotly.graph_objects as go
+# import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 from tqdm.notebook import tqdm
 
 tqdm.pandas()
-import plotly.express as px
+# import plotly.express as px
 import tifffile as tif
 import seaborn as sns
 from PIL import Image, ImageEnhance
@@ -74,13 +74,11 @@ import matplotlib
 from matplotlib import animation, rc
 
 rc('animation', html='jshtml')
-import plotly
+# import plotly
 import PIL
 import cv2
 
-import plotly.io as pio
-
-
+# import plotly.io as pio
 # print(pio.renderers)
 
 def seed_it_all(seed=7):
