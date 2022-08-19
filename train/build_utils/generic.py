@@ -29,6 +29,7 @@ def auto_class_weight(y):
     weights = class_weight.compute_class_weight('balanced', classes=classes, y=y)
     return {k: v for k, v in zip(classes, weights)}
 
+
 def plot_history(history, metrics=None):
     if metrics is None:
         metrics = ['acc']
@@ -41,6 +42,7 @@ def plot_history(history, metrics=None):
     plt.xlabel('Epoch')
     plt.legend(['train', 'test'], loc='upper left')
     plt.show()
+    print()
 
     for metric in metrics:
         plt.plot(history.history[metric])
